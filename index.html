@@ -22,31 +22,13 @@
       color: #111827;
     }
 
-    header {
+    header, section {
       padding: 32px;
       border-bottom: 1px solid var(--light-gray);
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-      color: var(--blue);
-    }
-
-    header p {
-      margin-top: 8px;
-      color: var(--gray);
-    }
-
-    section {
-      padding: 32px;
-      border-bottom: 1px solid var(--light-gray);
-    }
-
-    h2 {
-      margin-bottom: 16px;
-      font-size: 20px;
-    }
+    h1 { margin: 0; color: var(--blue); }
+    h2 { margin-bottom: 16px; }
 
     .river {
       display: flex;
@@ -67,14 +49,10 @@
       background: #fee2e2;
     }
 
-    .zone h3 {
-      margin-bottom: 8px;
-    }
-
-    .detector {
-      margin-top: 12px;
-      font-size: 14px;
-      color: var(--gray);
+    .counter {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 8px;
     }
 
     .controls button {
@@ -85,32 +63,12 @@
       background: var(--blue);
       color: white;
       cursor: pointer;
-      font-size: 14px;
     }
 
     .controls button.secondary {
       background: #9ca3af;
     }
 
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 16px;
-    }
-
-    th, td {
-      border-bottom: 1px solid var(--light-gray);
-      padding: 12px;
-      text-align: left;
-    }
-
-    th {
-      color: var(--gray);
-      font-weight: 600;
-    }
-
-    
     .alert {
       margin-top: 16px;
       padding: 16px;
@@ -121,24 +79,26 @@
       display: none;
     }
 
-    .explanation {
-      color: var(--gray);
-      max-width: 800px;
-      line-height: 1.6;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
     }
 
-    .counter {
-      font-size: 32px;
-      font-weight: 700;
-      margin-top: 8px;
+    th, td {
+      border-bottom: 1px solid var(--light-gray);
+      padding: 12px;
     }
+
+    th { color: var(--gray); }
   </style>
 </head>
+
 <body>
 
 <header>
   <h1>AquaTrack</h1>
-  <p>Система мониторинга миграции рыб и выявления браконьерства</p>
+  <p>Мониторинг миграции рыб и выявление браконьерства</p>
 </header>
 
 <section>
@@ -147,53 +107,38 @@
     <div class="zone" id="zoneA">
       <h3>Zone A</h3>
       <div class="counter" id="countA">0</div>
-      <div class="detector">Миграционный детектор (концепт)</div>
     </div>
+
     <div class="zone" id="zoneB">
       <h3>Zone B (зона риска)</h3>
       <div class="counter" id="countB">0</div>
-      <div class="detector">Миграционный детектор (концепт)</div>
+    </div>
+
+    <div class="zone" id="zoneC">
+      <h3>Zone C</h3>
+      <div class="counter" id="countC">0</div>
     </div>
   </div>
 </section>
 
 <section>
-  <h2>Количество проплывших рыб</h2>
+  <h2>Управление</h2>
   <div class="controls">
-    <button onclick="passA()">Рыба прошла через Zone A</button>
-    <button onclick="passB()">Рыба прошла через Zone B</button>
-    <button class="secondary" onclick="resetSim()">Сбросить симуляцию</button>
-    <button onclick="saveSession()">Сохранить данные мониторинга</button>
+    <button onclick="passA()">Рыба → Zone A</button>
+    <button onclick="passB()">Рыба → Zone B</button>
+    <button onclick="passC()">Рыба → Zone C</button>
+    <button class="secondary" onclick="resetSim()">Сброс</button>
+    <button onclick="saveSession()">Сохранить данные</button>
   </div>
-</section>
-
-<section>
-  <h2>Данные мониторинга</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Зона</th>
-        <th>Количество рыб</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Zone A</td>
-        <td id="tableA">0</td>
-      </tr>
-      <tr>
-        <td>Zone B</td>
-        <td id="tableB">0</td>
-      </tr>
-    </tbody>
-  </table>
 </section>
 
 <section>
   <h2>Аналитика</h2>
-  <p>Потери: <strong><span id="loss">0</span>%</strong></p>
+  <p>Потери A → B: <strong><span id="lossAB">0</span>%</strong></p>
+  <p>Потери B → C: <strong><span id="lossBC">0</span>%</strong></p>
+
   <div class="alert" id="alert">
-    ⚠ Возможная браконьерская активность в зоне B
+    ⚠ Обнаружены потери. Возможна браконьерская активность.
   </div>
 </section>
 
@@ -206,47 +151,81 @@
         <th>Дата</th>
         <th>Zone A</th>
         <th>Zone B</th>
-        <th>Потери (%)</th>
+        <th>Zone C</th>
+        <th>Потери A→B (%)</th>
       </tr>
     </thead>
     <tbody id="historyTable">
-      <!-- данные появятся автоматически -->
     </tbody>
   </table>
 </section>
 
-<section>
-  <h2>Объяснение</h2>
-  <p class="explanation">
-    В реальной системе используются подводные датчики и чипированные рыбы.
-    В данном прототипе данные эмулируются для демонстрации логики работы
-    системы мониторинга и выявления аномального сокращения популяции.
-  </p>
-</section>
+<script>
+  const STORAGE_KEY = 'aquatrack_history';
+
+  function saveSession() {
+    if (zoneA === 0) return;
+
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    const lossAB = zoneA === 0 ? 0 :
+      Math.round(((zoneA - zoneB) / zoneA) * 100);
+
+    history.push({
+      date: new Date().toLocaleString(),
+      zoneA,
+      zoneB,
+      zoneC,
+      lossAB
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const table = document.getElementById("historyTable");
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    history.forEach(item => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.date}</td>
+        <td>${item.zoneA}</td>
+        <td>${item.zoneB}</td>
+        <td>${item.zoneC}</td>
+        <td>${item.lossAB}%</td>
+      `;
+      table.appendChild(row);
+    });
+  }
+
+  renderHistory();
+</script>
 
 <script>
   let zoneA = 0;
   let zoneB = 0;
+  let zoneC = 0;
 
   function updateUI() {
-    document.getElementById('countA').innerText = zoneA;
-    document.getElementById('countB').innerText = zoneB;
-    document.getElementById('tableA').innerText = zoneA;
-    document.getElementById('tableB').innerText = zoneB;
+    countA.innerText = zoneA;
+    countB.innerText = zoneB;
+    countC.innerText = zoneC;
 
-    let lossPercent = zoneA === 0 ? 0 : Math.round(((zoneA - zoneB) / zoneA) * 100);
-    document.getElementById('loss').innerText = lossPercent;
+    const lossAB = zoneA === 0 ? 0 : Math.round(((zoneA - zoneB) / zoneA) * 100);
+    const lossBC = zoneB === 0 ? 0 : Math.round(((zoneB - zoneC) / zoneB) * 100);
 
-    const alert = document.getElementById('alert');
-    const zoneBEl = document.getElementById('zoneB');
+    lossABSpan.innerText = lossAB;
+    lossBCSpan.innerText = lossBC;
 
-    if (lossPercent > 30) {
-      alert.style.display = 'block';
-      zoneBEl.classList.add('warning');
-    } else {
-      alert.style.display = 'none';
-      zoneBEl.classList.remove('warning');
-    }
+    alertBox.style.display = (lossAB > 30 || lossBC > 30) ? "block" : "none";
+
+    zoneBEl.classList.toggle("warning", lossAB > 30);
+    zoneCEl.classList.toggle("warning", lossBC > 30);
   }
 
   function passA() {
@@ -259,56 +238,27 @@
     updateUI();
   }
 
-  function resetSim() {
-    zoneA = 0;
-    zoneB = 0;
+  function passC() {
+    if (zoneC < zoneB) zoneC++;
     updateUI();
   }
-</script>
 
-<script>
-  const STORAGE_KEY = 'aquatrack_history';
-
-  function saveSession() {
-    if (zoneA === 0) return;
-
-    const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-    const lossPercent = Math.round(((zoneA - zoneB) / zoneA) * 100);
-
-    history.push({
-      date: new Date().toLocaleString(),
-      zoneA,
-      zoneB,
-      loss: lossPercent
-    });
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-    renderHistory();
+  function resetSim() {
+    zoneA = zoneB = zoneC = 0;
+    updateUI();
   }
 
-  function renderHistory() {
-    const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    const table = document.getElementById('historyTable');
+  const countA = document.getElementById("countA");
+  const countB = document.getElementById("countB");
+  const countC = document.getElementById("countC");
 
-    table.innerHTML = '';
+  const lossABSpan = document.getElementById("lossAB");
+  const lossBCSpan = document.getElementById("lossBC");
 
-    history.forEach(item => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${item.date}</td>
-        <td>${item.zoneA}</td>
-        <td>${item.zoneB}</td>
-        <td>${item.loss}%</td>
-      `;
-      table.appendChild(row);
-    });
-  }
-
-  // Загружаем историю при открытии сайта
-  renderHistory();
+  const alertBox = document.getElementById("alert");
+  const zoneBEl = document.getElementById("zoneB");
+  const zoneCEl = document.getElementById("zoneC");
 </script>
 
 </body>
-
 </html>
