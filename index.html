@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>AquaTrack — мониторинг миграции рыб</title>
+  <title>AquaTrack - fish migration monitoring</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -98,7 +98,7 @@
 
 <header>
   <h1>AquaTrack</h1>
-  <p>Мониторинг миграции рыб и выявление браконьерства</p>
+  <p>Monitoring fish migration and detecting poaching</p>
 </header>
 
 <section>
@@ -122,28 +122,28 @@
 </section>
 
 <section>
-  <h2>Управление</h2>
+  <h2>Management</h2>
   <div class="controls">
     <button onclick="passA()">Рыба → Zone A</button>
     <button onclick="passB()">Рыба → Zone B</button>
     <button onclick="passC()">Рыба → Zone C</button>
-    <button class="secondary" onclick="resetSim()">Сброс</button>
-    <button onclick="saveSession()">Сохранить данные</button>
+    <button class="secondary" onclick="resetSim()">Reset</button>
+    <button onclick="saveSession()">Save data</button>
   </div>
 </section>
 
 <section>
-  <h2>Аналитика</h2>
-  <p>Потери A → B: <strong><span id="lossAB">0</span>%</strong></p>
-  <p>Потери B → C: <strong><span id="lossBC">0</span>%</strong></p>
+  <h2>Analytics</h2>
+  <p>Losses A → B: <strong><span id="lossAB">0</span>%</strong></p>
+  <p>Losses B → C: <strong><span id="lossBC">0</span>%</strong></p>
 
   <div class="alert" id="alert">
-    ⚠ Обнаружены потери. Возможна браконьерская активность.
+    ⚠ Losses detected. Poaching activity is possible.
   </div>
 </section>
 
 <section>
-  <h2>Статистика за всё время</h2>
+  <h2>Statistics for all time</h2>
 
   <table>
     <thead>
@@ -262,5 +262,6 @@
 
 </body>
 </html>
+
 
 
